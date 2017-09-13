@@ -1,0 +1,29 @@
+{
+    "name": "uruloke/lara-calendar",
+    "type": "library",
+    "require": {
+        "php": ">=7.0",
+        "nesbot/carbon": "^1.22",
+        "tightenco/collect": "^5.5",
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.5",
+        "phpunit/phpunit": "~6.0"
+    },
+    "authors": [
+        {
+            "name": "Oliver Nybroe",
+            "email": "olivernybroe@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Uruloke\\LaraCalendar\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Uruloke\\LaraCalendar\\Test\\": "Tests/"
+        }
+    }
+}
