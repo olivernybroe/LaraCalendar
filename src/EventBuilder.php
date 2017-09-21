@@ -150,12 +150,8 @@ class EventBuilder
 
 	public function __call ($name, $arguments)
 	{
-		if($this->eventType::hasEventProperty($name)) {
-			if(sizeof($arguments) >= 1) {
-				$this->eventValues[$name] = $arguments[0];
-				return $this;
-			}
-			return $this->eventValues[$name];
+		if($this->isEventProperty($name)) {
+			return $this->callEventProperty($name, $arguments);
 		}
 
 		if(sizeof($arguments) >= 1) {
@@ -174,6 +170,10 @@ class EventBuilder
 			return $this;
 		}
 		throw new \InvalidArgumentException("Missing arguments...");
+	}
+
+	public function isEventProperty($name) {
+		return $this->eventType::hasEventProperty($name);
 	}
 
 
@@ -233,6 +233,20 @@ class EventBuilder
 		}
 
 		return $event;
+	}
+
+	/**
+	 * @param $name
+	 * @param $arguments
+	 * @return $this|mixed
+	 */
+	private function callEventProperty ($name, $arguments)
+	{
+		if (sizeof($arguments) >= 1) {
+			$this->eventValues[$name] = $arguments[0];
+			return $this;
+		}
+		return $this->eventValues[$name];
 	}
 
 }

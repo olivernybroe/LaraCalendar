@@ -5,7 +5,7 @@ use Uruloke\LaraCalendar\Restrictions\Weekly\Weekly;
 use Uruloke\LaraCalendar\TestFacade;
 use Uruloke\LaraCalendar\CalendarServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-class TestCase extends OrchestraTestCase
+abstract class TestCase extends OrchestraTestCase
 {
 	/**
 	 * Load package service provider
@@ -24,7 +24,6 @@ class TestCase extends OrchestraTestCase
 	protected function getPackageAliases($app)
 	{
 		return [
-			'Test' => TestFacade::class,
 		];
 	}
 }
