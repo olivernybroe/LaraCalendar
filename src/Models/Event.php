@@ -8,27 +8,14 @@ use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use DateInterval;
 use DateTimeInterface;
+use Uruloke\LaraCalendar\Contracts\Eventable;
 
-class Event
+/**
+ * Class Event
+ * @property Carbon start
+ * @package Uruloke\LaraCalendar\Models
+ */
+class Event implements Eventable
 {
-	protected $start;
-
-	protected $end;
-
-	/**
-	 * Event constructor.
-	 * @param Carbon $start
-	 * @param Carbon $end
-	 */
-	public function __construct (Carbon $start, Carbon $end)
-	{
-		$this->start =  $start;
-		$this->end = $end;
-	}
-
-	public function startsAt()
-	{
-		return $this->start;
-	}
-
+	use HasEvent;
 }

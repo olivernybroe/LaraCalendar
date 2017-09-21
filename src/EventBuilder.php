@@ -3,6 +3,7 @@
 namespace Uruloke\LaraCalendar;
 
 use Illuminate\Support\Str;
+use Uruloke\LaraCalendar\Contracts\Eventable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\NeedToPass;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
 use Uruloke\LaraCalendar\Days\{
@@ -32,6 +33,11 @@ class EventBuilder
 	/** @var RestrictionCollection  */
 	protected $restrictions;
 
+	/** @var Eventable */
+	protected $eventType;
+
+	/** @var array */
+	protected $eventValues = [];
 
 	/**
 	 * EventBuilder constructor.
@@ -39,6 +45,7 @@ class EventBuilder
 	public function __construct ()
 	{
 		$this->restrictions = new RestrictionCollection();
+		$this->eventType = config('calendar.drivers.event', Event::class);
 	}
 
 
@@ -95,7 +102,7 @@ class EventBuilder
 				continue;
 			}
 
-			$event = new Event(clone $currentDay, clone $currentEndDay);
+			$event = $this->createEvent($currentDay, $currentEndDay);
 			$events->push($event);
 
 			$from->addDay();
@@ -112,6 +119,10 @@ class EventBuilder
 		return $this->getEventsBetween(clone $day->startOfMonth(), $day->endOfMonth());
 	}
 
+	public function getNextEvent() {
+		return $this->getNextEvents(1)->first();
+	}
+
 	public function getNextEvents(int $amount)
 	{
 		$events = new EventCollection();
@@ -126,7 +137,7 @@ class EventBuilder
 				continue;
 			}
 
-			$event = new Event(clone $currentDay, clone $currentEndDay);
+			$event = $this->createEvent($currentDay, $currentEndDay);
 
 			$events->push($event);
 
@@ -139,6 +150,14 @@ class EventBuilder
 
 	public function __call ($name, $arguments)
 	{
+		if($this->eventType::hasEventProperty($name)) {
+			if(sizeof($arguments) >= 1) {
+				$this->eventValues[$name] = $arguments[0];
+				return $this;
+			}
+			return $this->eventValues[$name];
+		}
+
 		if(sizeof($arguments) >= 1) {
 			$days = collect($arguments[0]);
 			unset($arguments[0]);
@@ -181,6 +200,39 @@ class EventBuilder
 			}
 		});
 		return $passes && $needToPass;
+	}
+
+	/**
+	 * @param string $eventType
+	 * @return EventBuilder
+	 */
+	public function setEvent ($eventType)
+	{
+		$this->eventType = $eventType;
+		return $this;
+	}
+
+	/**
+	 * @param $currentDay
+	 * @param $currentEndDay
+	 * @return mixed
+	 */
+	private function createEvent ($currentDay, $currentEndDay)
+	{
+		/** @var Eventable $event */
+		$event = new $this->eventType();
+
+		if(!($event instanceof Eventable)) {
+			throw new \InvalidArgumentException("The given event [{$this->eventType}] does not implement [Eventable]");
+		}
+		$event->setStart($currentDay);
+		$event->setEnds($currentEndDay);
+
+		foreach ($this->eventValues as $key => $value){
+			$event->$key = $value;
+		}
+
+		return $event;
 	}
 
 }

@@ -7,5 +7,8 @@ return [
 		'biWeekly' => \Uruloke\LaraCalendar\Restrictions\Weekly\BiWeekly::class,
 		'evenWeeks' => \Uruloke\LaraCalendar\Restrictions\Weekly\EvenWeeks::class,
 		'unevenWeeks' => \Uruloke\LaraCalendar\Restrictions\Weekly\UnevenWeeks::class
+	],
+	'drivers' => [
+		'event' => \Uruloke\LaraCalendar\Models\Event::class
 	]
 ];
