@@ -7,3 +7,8 @@ before_script:
 
 script:
   - vendor/bin/phpunit
+
+cache:
+  directories:
+    - node_modules
+    - vendor
