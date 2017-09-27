@@ -16,12 +16,12 @@ trait HasEvent
 
 	protected $ends;
 
-	public function startsAt()
+	public function startsAt() : Carbon
 	{
 		return $this->start;
 	}
 
-	public function endsAt()
+	public function endsAt() : Carbon
 	{
 		return $this->ends;
 	}

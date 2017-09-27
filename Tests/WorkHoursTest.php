@@ -23,6 +23,7 @@ class WorkHoursTest extends TestCase
 
 		// Act
 		$events = $builder->getNextEvents(5);
+
 		// Assert
 		$this->assertEquals(Carbon::parse("2017-09-05 08:00"), $events->first()->startsAt());
 		$this->assertEquals(Carbon::parse("2017-09-06 08:00"), $events->get(1)->startsAt());

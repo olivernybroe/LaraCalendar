@@ -6,7 +6,8 @@ return [
 		'notWeekly' => \Uruloke\LaraCalendar\Restrictions\Weekly\NotWeekly::class,
 		'biWeekly' => \Uruloke\LaraCalendar\Restrictions\Weekly\BiWeekly::class,
 		'evenWeeks' => \Uruloke\LaraCalendar\Restrictions\Weekly\EvenWeeks::class,
-		'unevenWeeks' => \Uruloke\LaraCalendar\Restrictions\Weekly\UnevenWeeks::class
+		'unevenWeeks' => \Uruloke\LaraCalendar\Restrictions\Weekly\UnevenWeeks::class,
+		'withoutDay' => \Uruloke\LaraCalendar\Restrictions\Daily\WithoutDay::class
 	],
 	'drivers' => [
 		'event' => \Uruloke\LaraCalendar\Models\Event::class

@@ -56,8 +56,6 @@ class EventWithData extends Model implements Eventable {
 		'place',
 		'description'
 	];
-
-
 }
 
 

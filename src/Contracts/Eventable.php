@@ -4,11 +4,13 @@
 namespace Uruloke\LaraCalendar\Contracts;
 
 
+use Uruloke\LaraCalendar\Carbon;
+
 interface Eventable
 {
-	public function startsAt();
+	public function startsAt() : Carbon;
 
-	public function endsAt();
+	public function endsAt() : Carbon;
 
 	public static function getEventProperties() : array;
 

@@ -23,4 +23,15 @@ class RestrictionCollection extends Collection
 		}
 		return true;
 	}
+
+	protected function getArrayableItems ($items)
+	{
+		if($items instanceof \DateTimeInterface) {
+			return [$items];
+		}
+
+		return parent::getArrayableItems($items);
+	}
+
+
 }

@@ -21,6 +21,7 @@ use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
  * @method $this notWeekly(string|array $days, int $everyNWeek = null)
  * @method $this evenWeeks(string|array $days)
  * @method $this unevenWeeks(string|array $days)
+ * @method $this withoutDay(Carbon|array $days)
  * @package Uruloke\LaraCalendar
  */
 class EventBuilder
@@ -155,7 +156,7 @@ class EventBuilder
 		}
 
 		if(sizeof($arguments) >= 1) {
-			$days = collect($arguments[0]);
+			$days = new RestrictionCollection($arguments[0]);
 			unset($arguments[0]);
 
 			$this->removeAndFromCall($name);
