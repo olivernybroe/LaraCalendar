@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/uruloke/LaraCalendar.svg?branch=master)](https://travis-ci.org/uruloke/LaraCalendar)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 Documentation is still in development.
 
