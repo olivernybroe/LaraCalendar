@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/uruloke/LaraCalendar.svg?branch=master)](https://travis-ci.org/uruloke/LaraCalendar)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
+[![Latest Stable Version](https://poser.pugx.org/uruloke/lara-calendar/v/stable)](https://packagist.org/packages/uruloke/lara-calendar)
+[![Total Downloads](https://poser.pugx.org/uruloke/lara-calendar/downloads)](https://packagist.org/packages/uruloke/lara-calendar)
 
 Documentation is still in development.
 
