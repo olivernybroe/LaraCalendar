@@ -1,6 +1,7 @@
 {
     "name": "uruloke/lara-calendar",
     "type": "library",
+    "license": "MIT",
     "require": {
         "php": ">=7.0",
         "nesbot/carbon": "^1.22",
