@@ -10,4 +10,6 @@ use Uruloke\LaraCalendar\EventCollection;
 interface Restrictionable
 {
 	public function passes(Carbon $currentDay, EventCollection $events): bool;
+
+	public function __toString() : string ;
 }

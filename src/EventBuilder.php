@@ -2,6 +2,7 @@
 
 namespace Uruloke\LaraCalendar;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
 use Uruloke\LaraCalendar\Contracts\Eventable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\NeedToPass;
@@ -22,9 +23,10 @@ use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
  * @method $this evenWeeks(string|array $days)
  * @method $this unevenWeeks(string|array $days)
  * @method $this withoutDay(Carbon|array $days)
+ * @method $this withoutWeek(int $weekNumber)
  * @package Uruloke\LaraCalendar
  */
-class EventBuilder
+class EventBuilder implements Arrayable
 {
 	/** @var  Carbon */
 	protected $startsAt;
@@ -42,9 +44,14 @@ class EventBuilder
 
 	/**
 	 * EventBuilder constructor.
+	 * @param string|null $string
 	 */
-	public function __construct ()
+	public function __construct (string $string = null)
 	{
+		if(!is_null($string)) {
+
+		}
+
 		$this->restrictions = new RestrictionCollection();
 		$this->eventType = config('calendar.drivers.event', Event::class);
 	}
@@ -171,6 +178,27 @@ class EventBuilder
 			return $this;
 		}
 		throw new \InvalidArgumentException("Missing arguments...");
+	}
+
+	public function toString()
+	{
+		return implode("|", $this->toArray());
+	}
+
+	public function toArray()
+	{
+		$restrictions = [
+			"^{{$this->startsAt->timestamp}}",
+			"\${{$this->endsAt->timestamp}}",
+		];
+		return $this->restrictions->map(function(Restrictionable $restriction) {
+			return $restriction->__toString();
+		})->merge($restrictions)->toArray();
+	}
+
+	public function __toString ()
+	{
+		return $this->toString();
 	}
 
 	public function isEventProperty($name) {

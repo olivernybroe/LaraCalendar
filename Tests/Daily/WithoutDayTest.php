@@ -29,4 +29,20 @@ class WithoutDayTest extends TestCase
 		$this->assertTrue($events->get(1)->startsAt()->isSameDay(Carbon::parse("2017-09-06")));
 		$this->assertTrue($events->get(2)->startsAt()->isSameDay(Carbon::parse("2017-09-08")));
 	}
+
+	/** @test */
+	public function can_convert_to_string()
+	{
+		// Arrange
+		$builder = new EventBuilder();
+		$builder->startsAt(Carbon::parse("2017-09-05 08:00"));
+		$builder->endsAt(Carbon::parse("2017-09-05 18:00"));
+		$builder->withoutDay(Carbon::parse("2017-09-07"));
+
+		// Act
+		$array = $builder->toArray();
+
+		// Assert
+		$this->assertContains("!d{2017-09-07}", $array);
+	}
 }

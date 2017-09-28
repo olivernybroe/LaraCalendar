@@ -29,4 +29,9 @@ class WithoutDay implements Restrictionable, NeedToPass
 	{
 		return !$currentDay->isSameDay($this->withoutDay);
 	}
+
+	public function __toString (): string
+	{
+		return "!d{{$this->withoutDay->toDateString()}}";
+	}
 }

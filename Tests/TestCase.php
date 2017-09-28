@@ -26,4 +26,11 @@ abstract class TestCase extends OrchestraTestCase
 		return [
 		];
 	}
+
+	protected function assertStringContains ($expected, $actual)
+	{
+		$this->assertTrue(
+			$this->stringContains($expected)->evaluate($actual, "", true)
+		);
+	}
 }

@@ -13,4 +13,9 @@ class Carbon extends \Illuminate\Support\Carbon
 	public function isUnevenWeek() : bool {
 		return !$this->isEvenWeek();
 	}
+
+	public function isWeek (int $week) : bool
+	{
+		return $this->weekOfYear === $week;
+	}
 }

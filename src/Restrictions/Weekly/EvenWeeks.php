@@ -17,4 +17,10 @@ class EvenWeeks extends Weekly
 		return false;
 	}
 
+	public function __toString (): string
+	{
+		return "%".parent::__toString();
+	}
+
+
 }

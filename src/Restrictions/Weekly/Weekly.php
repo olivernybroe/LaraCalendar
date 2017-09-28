@@ -5,6 +5,7 @@ namespace Uruloke\LaraCalendar\Restrictions\Weekly;
 
 
 
+use Illuminate\Contracts\Support\Arrayable;
 use Uruloke\LaraCalendar\Carbon;
 use Uruloke\LaraCalendar\Contracts\Days\Day;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Recurrence\Recurrencable;
@@ -49,5 +50,13 @@ class Weekly implements Recurrencable
 	private function isSameDay (Carbon $currentDay): bool
 	{
 		return $currentDay->dayOfWeek == $this->day::dayAsNumber();
+	}
+
+	public function __toString (): string
+	{
+		if(is_null($this->everyNWeek)) {
+			return "w{{$this->day::dayAsNumber()}}";
+		}
+		return "w{{$this->day::dayAsNumber()},{$this->everyNWeek}}";
 	}
 }
