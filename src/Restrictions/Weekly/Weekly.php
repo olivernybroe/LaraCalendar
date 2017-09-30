@@ -8,11 +8,13 @@ namespace Uruloke\LaraCalendar\Restrictions\Weekly;
 use Illuminate\Contracts\Support\Arrayable;
 use Uruloke\LaraCalendar\Carbon;
 use Uruloke\LaraCalendar\Contracts\Days\Day;
+use Uruloke\LaraCalendar\Contracts\Restrictions\Parseable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Recurrence\Recurrencable;
+use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
 use Uruloke\LaraCalendar\EventCollection;
 use Uruloke\LaraCalendar\Models\Event;
 
-class Weekly implements Recurrencable
+class Weekly implements Recurrencable, Parseable
 {
 	/** @var Day */
 	public $day;
@@ -58,5 +60,18 @@ class Weekly implements Recurrencable
 			return "w{{$this->day::dayAsNumber()}}";
 		}
 		return "w{{$this->day::dayAsNumber()},{$this->everyNWeek}}";
+	}
+
+	/**
+	 * @return Restrictionable
+	 *
+	 * Parse in the parameters for converting from string to the
+	 * class.
+	 */
+	public static function parse (): Restrictionable
+	{
+		$args = func_get_args();
+
+		return new Weekly(int_to_day($args[0]), $args[1] ?? null);
 	}
 }

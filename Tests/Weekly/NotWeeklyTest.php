@@ -7,6 +7,7 @@ namespace Uruloke\LaraCalendar\Test\Weekly;
 use Uruloke\LaraCalendar\Carbon;
 use Uruloke\LaraCalendar\Days\Monday;
 use Uruloke\LaraCalendar\EventBuilder;
+use Uruloke\LaraCalendar\Restrictions\Weekly\NotWeekly;
 use Uruloke\LaraCalendar\Test\TestCase;
 
 class NotWeeklyTest extends TestCase
@@ -41,5 +42,33 @@ class NotWeeklyTest extends TestCase
 
 		// Assert
 		$this->assertContains("!w{1,77}", $array);
+	}
+
+	/** @test */
+	public function can_convert_from_string()
+	{
+		// Arrange
+		$builder = EventBuilder::parse("!w{1}");
+
+		// Act
+		$restrictions = $builder->getRestrictions();
+
+		// Assert
+		$this->assertCount(1, $restrictions);
+		$this->assertContainsInstancesOf(NotWeekly::class, $restrictions);
+	}
+
+	/** @test */
+	public function can_convert_from_string_when_n_weekly()
+	{
+		// Arrange
+		$builder = EventBuilder::parse("!w{1,43}");
+
+		// Act
+		$restrictions = $builder->getRestrictions();
+
+		// Assert
+		$this->assertCount(1, $restrictions);
+		$this->assertContainsInstancesOf(NotWeekly::class, $restrictions);
 	}
 }

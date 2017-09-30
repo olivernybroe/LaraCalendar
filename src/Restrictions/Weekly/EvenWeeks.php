@@ -5,6 +5,7 @@ namespace Uruloke\LaraCalendar\Restrictions\Weekly;
 
 
 use Uruloke\LaraCalendar\Carbon;
+use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
 use Uruloke\LaraCalendar\EventCollection;
 
 class EvenWeeks extends Weekly
@@ -20,6 +21,12 @@ class EvenWeeks extends Weekly
 	public function __toString (): string
 	{
 		return "%".parent::__toString();
+	}
+
+	public static function parse (): Restrictionable
+	{
+		$args = func_get_args();
+		return new EvenWeeks($args[0] ?? null);
 	}
 
 

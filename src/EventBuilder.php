@@ -4,8 +4,10 @@ namespace Uruloke\LaraCalendar;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use Uruloke\LaraCalendar\Contracts\Eventable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\NeedToPass;
+use Uruloke\LaraCalendar\Contracts\Restrictions\Parseable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
 use Uruloke\LaraCalendar\Days\{
 	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
@@ -28,6 +30,10 @@ use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
  */
 class EventBuilder implements Arrayable
 {
+	use Macroable {
+		Macroable::__call as macroCall;
+	}
+
 	/** @var  Carbon */
 	protected $startsAt;
 	/** @var  Carbon */
@@ -42,18 +48,42 @@ class EventBuilder implements Arrayable
 	/** @var array */
 	protected $eventValues = [];
 
+	public static $days = [
+		Monday::class,
+		Tuesday::class,
+		Wednesday::class,
+		Thursday::class,
+		Friday::class,
+		Saturday::class,
+		Sunday::class
+	];
+
 	/**
 	 * EventBuilder constructor.
-	 * @param string|null $string
 	 */
-	public function __construct (string $string = null)
+	public function __construct ()
 	{
-		if(!is_null($string)) {
-
-		}
-
 		$this->restrictions = new RestrictionCollection();
 		$this->eventType = config('calendar.drivers.event', Event::class);
+	}
+
+	public static function parse(string $parse) : EventBuilder
+	{
+		$builder = new EventBuilder();
+
+		$parser = explode('|', $parse);
+
+		foreach (app(RestrictionProvider::class)->getParsers() as $parseRegex => $parserClass) {
+
+			foreach ($parser as $parse) {
+				if(preg_match("/{$parseRegex}/", $parse, $matches)) {
+					unset($matches[0]);
+					$builder->restrictions->push($parserClass::parse(...$matches));
+				}
+			}
+		}
+
+		return $builder;
 	}
 
 
@@ -161,23 +191,8 @@ class EventBuilder implements Arrayable
 		if($this->isEventProperty($name)) {
 			return $this->callEventProperty($name, $arguments);
 		}
-
-		if(sizeof($arguments) >= 1) {
-			$days = new RestrictionCollection($arguments[0]);
-			unset($arguments[0]);
-
-			$this->removeAndFromCall($name);
-
-			$className = app(RestrictionProvider::class)->getClass($name);
-			throw_unless(class_exists($className), \InvalidArgumentException::class, "Class [{$name}] does not exist in config.");
-
-			$days->each(function($day) use ($name, $className, $arguments) {
-				$this->restrictions->push(new $className($day, ...$arguments));
-			});
-
-			return $this;
-		}
-		throw new \InvalidArgumentException("Missing arguments...");
+		$this->removeAndFromCall($name);
+		return $this->macroCall($name, $arguments);
 	}
 
 	public function toString()
@@ -276,6 +291,14 @@ class EventBuilder implements Arrayable
 			return $this;
 		}
 		return $this->eventValues[$name];
+	}
+
+	/**
+	 * @return RestrictionCollection
+	 */
+	public function getRestrictions (): RestrictionCollection
+	{
+		return $this->restrictions;
 	}
 
 }

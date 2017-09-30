@@ -33,4 +33,16 @@ abstract class TestCase extends OrchestraTestCase
 			$this->stringContains($expected)->evaluate($actual, "", true)
 		);
 	}
+
+	protected function assertContainsInstancesOf ($expected, $haystack)
+	{
+		$contains = false;
+		foreach ($haystack as $item) {
+			if ($item instanceof $expected) {
+				$contains = true;
+			}
+		}
+
+		$this->assertTrue($contains, "The haystack does not contain the expected class [{$expected}]");
+	}
 }

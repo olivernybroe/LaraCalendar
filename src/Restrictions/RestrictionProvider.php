@@ -10,4 +10,13 @@ class RestrictionProvider
 		return config("calendar.maps.$name");
 	}
 
+	public function getClasses()
+	{
+		return config('calendar.maps');
+	}
+
+	public function getParsers()
+	{
+		return config('calendar.parser');
+	}
 }

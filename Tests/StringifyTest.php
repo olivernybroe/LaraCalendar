@@ -6,6 +6,9 @@ namespace Uruloke\LaraCalendar\Test;
 
 use Uruloke\LaraCalendar\Carbon;
 use Uruloke\LaraCalendar\EventBuilder;
+use Uruloke\LaraCalendar\Restrictions\Daily\WithoutDay;
+use Uruloke\LaraCalendar\Restrictions\Weekly\NotWeekly;
+use Uruloke\LaraCalendar\Restrictions\Weekly\Weekly;
 
 class StringifyTest extends TestCase
 {
@@ -29,15 +32,20 @@ class StringifyTest extends TestCase
 		$this->assertStringContains("!d{2017-09-07}", $string); // Without specific day.
 	}
 
+	/** @test */
 	public function can_convert_to_builder()
 	{
 		// Arrange
-		$builder = new EventBuilder("^{1504598400}|\${1504634400}|w{6}|w{0}|w{1}|w{2}|w{3}|w{4}|w{5}|!d{2017-09-07}");
+		$builder = EventBuilder::parse("^{1504598400}|\${1504634400}|w{1}|!d{2017-09-07}");
 
 
 		// Act
+		$restrictions = $builder->getRestrictions();
 
 		// Assert
+		$this->assertCount(2, $restrictions);
+		$this->assertContainsInstancesOf(Weekly::class, $restrictions);
+		$this->assertContainsInstancesOf(WithoutDay::class, $restrictions);
 
 
 	}

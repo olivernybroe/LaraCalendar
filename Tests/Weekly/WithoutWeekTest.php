@@ -7,6 +7,7 @@ namespace Uruloke\LaraCalendar\Test\Weekly;
 use Uruloke\LaraCalendar\Carbon;
 use Uruloke\LaraCalendar\Days\Monday;
 use Uruloke\LaraCalendar\EventBuilder;
+use Uruloke\LaraCalendar\Restrictions\Weekly\WithoutWeek;
 use Uruloke\LaraCalendar\Test\TestCase;
 
 class WithoutWeekTest extends TestCase
@@ -69,5 +70,19 @@ class WithoutWeekTest extends TestCase
 		// Assert
 		$this->assertEquals(Carbon::parse("2017-09-11 08:00"), $events->first()->startsAt());
 		$this->assertEquals(Carbon::parse("2017-09-25 08:00"), $events->get(1)->startsAt());
+	}
+
+	/** @test */
+	public function can_convert_from_string()
+	{
+		// Arrange
+		$builder = EventBuilder::parse("!W{1}");
+
+		// Act
+		$restrictions = $builder->getRestrictions();
+
+		// Assert
+		$this->assertCount(1, $restrictions);
+		$this->assertContainsInstancesOf(WithoutWeek::class, $restrictions);
 	}
 }

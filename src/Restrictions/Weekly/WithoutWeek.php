@@ -6,10 +6,11 @@ namespace Uruloke\LaraCalendar\Restrictions\Weekly;
 
 use Uruloke\LaraCalendar\Carbon;
 use Uruloke\LaraCalendar\Contracts\Restrictions\NeedToPass;
+use Uruloke\LaraCalendar\Contracts\Restrictions\Parseable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
 use Uruloke\LaraCalendar\EventCollection;
 
-class WithoutWeek implements Restrictionable, NeedToPass
+class WithoutWeek implements Restrictionable, NeedToPass, Parseable
 {
 	/** @var int */
 	protected $week;
@@ -37,5 +38,17 @@ class WithoutWeek implements Restrictionable, NeedToPass
 	public function __toString (): string
 	{
 		return "!W{{$this->week}}";
+	}
+
+	/**
+	 * @return Restrictionable
+	 *
+	 * Parse in the parameters for converting from string to the
+	 * class.
+	 */
+	public static function parse (): Restrictionable
+	{
+		$args = func_get_args();
+		return new WithoutWeek($args[0]);
 	}
 }

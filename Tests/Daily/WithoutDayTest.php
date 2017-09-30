@@ -6,6 +6,7 @@ namespace Uruloke\LaraCalendar\Test\Daily;
 
 use Uruloke\LaraCalendar\Carbon;
 use Uruloke\LaraCalendar\EventBuilder;
+use Uruloke\LaraCalendar\Restrictions\Daily\WithoutDay;
 use Uruloke\LaraCalendar\Test\TestCase;
 
 class WithoutDayTest extends TestCase
@@ -44,5 +45,19 @@ class WithoutDayTest extends TestCase
 
 		// Assert
 		$this->assertContains("!d{2017-09-07}", $array);
+	}
+
+	/** @test */
+	public function can_convert_from_string()
+	{
+		// Arrange
+		$builder = EventBuilder::parse("!d{2017-08-08}");
+
+		// Act
+		$restrictions = $builder->getRestrictions();
+
+		// Assert
+		$this->assertCount(1, $restrictions);
+		$this->assertContainsInstancesOf(WithoutDay::class, $restrictions);
 	}
 }
