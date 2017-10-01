@@ -15,7 +15,7 @@ $ composer require uruloke/lara-calendar
 
 
 ## Example
-Let's say we wan't to create an event which repeats monday, tuesday, wednesday amd thursday each week.
+Let's say we wan't to create an event which repeats monday, tuesday, wednesday and thursday each week.
 We can generate this simply by doing the following
 
 ```php
