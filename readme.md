@@ -6,7 +6,7 @@
 Documentation is still in development.
 
 ## Introduction
-When building a calendar it can be troublesome dealing with recurring events. This package tries to solve this problem by making an easy to use builder syntax with extensibility. <br>
+Building a calendar can be troublesome, especially when you deal with recurring events. This package tries to solve this problem by making an easy to use event builder with extensibility. <br>
 
 Install it via composer
 ```
