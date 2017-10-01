@@ -6,7 +6,7 @@
 Documentation is still in development.
 
 ## Introduction
-When building an calendar it can be troublesome when dealing with recurring events, this package is trying to solve this problem by making and easy to use builder syntax with easy extensibility. <br>
+When building a calendar it can be troublesome dealing with recurring events. This package tries to solve this problem by making an easy to use builder syntax with extensibility. <br>
 
 Install it via composer
 ```
@@ -15,8 +15,8 @@ $ composer require uruloke/lara-calendar
 
 
 ## Example
-Let's say we wan't to create an event which repeats monday, tuesday, wednesday and thursday each week.
-We can generate this simply by doing the following
+Let's say we want to create an event which repeats every Monday, Tuesday, Wednesday and Thursday.
+We can generate this simply by doing the following:
 
 ```php
 $builder = new EventBuilder();
@@ -28,7 +28,7 @@ $builder->weekly([Monday::class, Tuesday::class, Wednesday::class, Thursday::cla
 $builder->getNextEvents(3)
 
 ```
-The dumped data for the next 3 events would then be.
+The dumped data for the next 3 events would then be:
 ```		
 Uruloke\LaraCalendar\EventCollection {#221
   #items: array:3 [
@@ -85,7 +85,7 @@ Uruloke\LaraCalendar\EventCollection {#221
 ## Filters
 
 ### Filter days out
-There might be a specific day which you won't to blacklist from your event, this can be achieved with `withoutDay` method.
+There might be a specific day which you want to blacklist from your event. This can be achieved by using the `withoutDay` method.
 Just parse in a day and it will ignore that specific day.
 
 ```
