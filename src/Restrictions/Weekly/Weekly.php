@@ -5,7 +5,6 @@ namespace Uruloke\LaraCalendar\Restrictions\Weekly;
 
 
 
-use Illuminate\Contracts\Support\Arrayable;
 use Uruloke\LaraCalendar\Carbon;
 use Uruloke\LaraCalendar\Contracts\Days\Day;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Parseable;
@@ -13,9 +12,12 @@ use Uruloke\LaraCalendar\Contracts\Restrictions\Recurrence\Recurrencable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
 use Uruloke\LaraCalendar\EventCollection;
 use Uruloke\LaraCalendar\Models\Event;
+use Uruloke\LaraCalendar\Restrictions\CanParse;
 
 class Weekly implements Recurrencable, Parseable
 {
+	use CanParse;
+
 	/** @var Day */
 	public $day;
 	/**
@@ -54,12 +56,10 @@ class Weekly implements Recurrencable, Parseable
 		return $currentDay->dayOfWeek == $this->day::dayAsNumber();
 	}
 
-	public function __toString (): string
+
+	public function toArray()
 	{
-		if(is_null($this->everyNWeek)) {
-			return "w{{$this->day::dayAsNumber()}}";
-		}
-		return "w{{$this->day::dayAsNumber()},{$this->everyNWeek}}";
+		return [$this->day::dayAsNumber(), $this->everyNWeek ?? 0];
 	}
 
 	/**

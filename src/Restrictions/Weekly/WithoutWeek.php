@@ -9,9 +9,12 @@ use Uruloke\LaraCalendar\Contracts\Restrictions\NeedToPass;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Parseable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
 use Uruloke\LaraCalendar\EventCollection;
+use Uruloke\LaraCalendar\Restrictions\CanParse;
 
 class WithoutWeek implements Restrictionable, NeedToPass, Parseable
 {
+	use CanParse;
+
 	/** @var int */
 	protected $week;
 
@@ -35,11 +38,6 @@ class WithoutWeek implements Restrictionable, NeedToPass, Parseable
 		return !$currentDay->isWeek($this->week);
 	}
 
-	public function __toString (): string
-	{
-		return "!W{{$this->week}}";
-	}
-
 	/**
 	 * @return Restrictionable
 	 *
@@ -50,5 +48,15 @@ class WithoutWeek implements Restrictionable, NeedToPass, Parseable
 	{
 		$args = func_get_args();
 		return new WithoutWeek($args[0]);
+	}
+
+	/**
+	 * Get the instance as an array.
+	 *
+	 * @return array
+	 */
+	public function toArray ()
+	{
+		return [$this->week];
 	}
 }

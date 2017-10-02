@@ -4,7 +4,9 @@
 namespace Uruloke\LaraCalendar\Contracts\Restrictions;
 
 
-interface Parseable
+use Illuminate\Contracts\Support\Arrayable;
+
+interface Parseable extends Arrayable
 {
 	/**
 	 * @return Restrictionable
@@ -13,5 +15,7 @@ interface Parseable
 	 * class.
 	 */
 	public static function parse() : Restrictionable;
+
+	public function __toString () : string;
 
 }

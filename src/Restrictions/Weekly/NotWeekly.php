@@ -16,11 +16,6 @@ class NotWeekly extends Weekly implements NeedToPass
 		return !parent::passes($currentDay, $events);
 	}
 
-	public function __toString (): string
-	{
-		return "!".parent::__toString();
-	}
-
 	public static function parse (): Restrictionable
 	{
 		$args = func_get_args();

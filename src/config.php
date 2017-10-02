@@ -21,6 +21,21 @@ return [
 	],
 	/*
 	|--------------------------------------------------------------------------
+	| Shortcuts
+	|--------------------------------------------------------------------------
+	|
+	| Registers shortcuts into the application. This is another wrapper for the
+	| Macroable trait, here we can inject simple methods. First parameter is
+	| the builder itself, rest is the parameters. Define the shortcuts with
+	| simple syntax [class@method] (static methods only!)
+	*/
+	'shortcuts' => [
+		\Uruloke\LaraCalendar\Restrictions\Shortcuts::class.'@allWorkdays',
+		\Uruloke\LaraCalendar\Restrictions\Shortcuts::class.'@allWeekDays',
+		\Uruloke\LaraCalendar\Restrictions\Shortcuts::class.'@allWeekendDays',
+	],
+	/*
+	|--------------------------------------------------------------------------
 	| Parsers
 	|--------------------------------------------------------------------------
 	|
@@ -28,14 +43,15 @@ return [
 	| implement Parseable.
 	*/
 	'parser' => [
-		'^w{(\d+),(\d+)}' => \Uruloke\LaraCalendar\Restrictions\Weekly\Weekly::class,
-		"^!w{(\d+),(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\NotWeekly::class,
-		"^w{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\Weekly::class,
-		"^!w{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\NotWeekly::class,
-		"^!d{(\d+-\d+-\d+)}" => \Uruloke\LaraCalendar\Restrictions\Daily\WithoutDay::class,
-		"^%w{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\EvenWeeks::class,
-		"^%%w{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\UnevenWeeks::class,
-		"^!W{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\WithoutWeek::class,
+		'w{(\d+),([0-13-9]+)}' => \Uruloke\LaraCalendar\Restrictions\Weekly\Weekly::class,
+		'w{(\d+),2}' => \Uruloke\LaraCalendar\Restrictions\Weekly\BiWeekly::class,
+		"!w{(\d+),(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\NotWeekly::class,
+		"w{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\Weekly::class,
+		"!w{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\NotWeekly::class,
+		"!d{(\d+-\d+-\d+)}" => \Uruloke\LaraCalendar\Restrictions\Daily\WithoutDay::class,
+		"%w{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\EvenWeeks::class,
+		"%%w{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\UnevenWeeks::class,
+		"!W{(\d+)}" => \Uruloke\LaraCalendar\Restrictions\Weekly\WithoutWeek::class,
 	],
 	'drivers' => [
 		'event' => \Uruloke\LaraCalendar\Models\Event::class

@@ -23,9 +23,8 @@ class NotWeeklyTest extends TestCase
 
 		// Act
 		$array = $builder->toArray();
-
 		// Assert
-		$this->assertContains("!w{1}", $array);
+		$this->assertContains("!w{1,0}", $array);
 	}
 
 	/** @test */

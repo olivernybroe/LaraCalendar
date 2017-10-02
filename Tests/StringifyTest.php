@@ -28,7 +28,7 @@ class StringifyTest extends TestCase
 		// Assert
 		$this->assertStringContains("^{{$start->timestamp}}", $string);
 		$this->assertStringContains("\${{$end->timestamp}}", $string);
-		$this->assertStringContains("w{0}", $string); // Has monday.
+		$this->assertStringContains("w{0,0}", $string); // Has monday.
 		$this->assertStringContains("!d{2017-09-07}", $string); // Without specific day.
 	}
 

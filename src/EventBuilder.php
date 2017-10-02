@@ -26,6 +26,7 @@ use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
  * @method $this unevenWeeks(string|array $days)
  * @method $this withoutDay(Carbon|array $days)
  * @method $this withoutWeek(int $weekNumber)
+ * @method $this allWorkdays()
  * @package Uruloke\LaraCalendar
  */
 class EventBuilder implements Arrayable
@@ -74,15 +75,13 @@ class EventBuilder implements Arrayable
 		$parser = explode('|', $parse);
 
 		foreach (app(RestrictionProvider::class)->getParsers() as $parseRegex => $parserClass) {
-
 			foreach ($parser as $parse) {
-				if(preg_match("/{$parseRegex}/", $parse, $matches)) {
+				if(preg_match("/^{$parseRegex}/", $parse, $matches)) {
 					unset($matches[0]);
 					$builder->restrictions->push($parserClass::parse(...$matches));
 				}
 			}
 		}
-
 		return $builder;
 	}
 
@@ -97,31 +96,6 @@ class EventBuilder implements Arrayable
 	{
 		$this->endsAt = Carbon::parse($endsAt);
 		return $this;
-	}
-
-	public function allWorkdays()
-	{
-		return $this->weekly([
-			Monday::class,
-			Tuesday::class,
-			Wednesday::class,
-			Thursday::class,
-			Friday::class
-		]);
-	}
-
-	public function allWeekendDays()
-	{
-		return $this->weekly([
-			Saturday::class,
-			Sunday::class
-		]);
-	}
-
-	public function allWeekDays()
-	{
-		$this->allWeekendDays();
-		return $this->allWorkdays();
 	}
 
 	public function getEventsBetween(\DateTimeInterface $from, \DateTimeInterface $to) : EventCollection
@@ -206,7 +180,7 @@ class EventBuilder implements Arrayable
 			"^{{$this->startsAt->timestamp}}",
 			"\${{$this->endsAt->timestamp}}",
 		];
-		return $this->restrictions->map(function(Restrictionable $restriction) {
+		return $this->restrictions->map(function(Parseable $restriction) {
 			return $restriction->__toString();
 		})->merge($restrictions)->toArray();
 	}

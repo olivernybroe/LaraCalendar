@@ -18,16 +18,9 @@ class EvenWeeks extends Weekly
 		return false;
 	}
 
-	public function __toString (): string
-	{
-		return "%".parent::__toString();
-	}
-
 	public static function parse (): Restrictionable
 	{
 		$args = func_get_args();
 		return new EvenWeeks($args[0] ?? null);
 	}
-
-
 }

@@ -11,9 +11,12 @@ use Uruloke\LaraCalendar\Contracts\Restrictions\Parseable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
 use Uruloke\LaraCalendar\EventCollection;
 use \Uruloke\LaraCalendar\Carbon AS laraCarbon;
+use Uruloke\LaraCalendar\Restrictions\CanParse;
 
 class WithoutDay implements Restrictionable, NeedToPass, Parseable
 {
+	use CanParse;
+
 	/** @var Carbon */
 	public $withoutDay;
 
@@ -32,11 +35,6 @@ class WithoutDay implements Restrictionable, NeedToPass, Parseable
 		return !$currentDay->isSameDay($this->withoutDay);
 	}
 
-	public function __toString (): string
-	{
-		return "!d{{$this->withoutDay->toDateString()}}";
-	}
-
 	/**
 	 * @return Restrictionable
 	 *
@@ -48,5 +46,15 @@ class WithoutDay implements Restrictionable, NeedToPass, Parseable
 		$args = func_get_args();
 
 		return new WithoutDay(Carbon::parse($args[0]));
+	}
+
+	/**
+	 * Get the instance as an array.
+	 *
+	 * @return array
+	 */
+	public function toArray ()
+	{
+		return [$this->withoutDay->toDateString()];
 	}
 }

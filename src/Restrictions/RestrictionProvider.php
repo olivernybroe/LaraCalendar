@@ -19,4 +19,14 @@ class RestrictionProvider
 	{
 		return config('calendar.parser');
 	}
+
+	public function getParserFromClass(string $class)
+	{
+		return array_search($class,$this->getParsers());
+	}
+
+	public function getShortcuts()
+	{
+		return config('calendar.shortcuts');
+	}
 }
