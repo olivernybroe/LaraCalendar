@@ -37,6 +37,7 @@ class CustomEvent extends TestCase
 		$this->assertEquals($event->startsAt(), Carbon::parse('2017-09-05 08:00'));
 		$this->assertEquals($event->endsAt(), Carbon::parse('2017-09-05 18:00'));
 		$this->assertEquals('02332 - Forelæsning', $event->title);
+		$this->assertEquals($builder->title(), $event->title);
 		$this->assertArraySubset([
 			'title' => '02332 - Forelæsning',
 			'place' => 'Building 306, DTU',

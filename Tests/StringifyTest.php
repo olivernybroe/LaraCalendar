@@ -24,8 +24,10 @@ class StringifyTest extends TestCase
 
 		// Act
 		$string = $builder->toString();
+		$stringMagicMethod = $builder->__toString();
 
 		// Assert
+        $this->assertEquals($string, $stringMagicMethod);
 		$this->assertStringContains("^{{$start->timestamp}}", $string);
 		$this->assertStringContains("\${{$end->timestamp}}", $string);
 		$this->assertStringContains("w{0,0}", $string); // Has monday.

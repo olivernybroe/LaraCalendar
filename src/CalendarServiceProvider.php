@@ -15,18 +15,9 @@ class CalendarServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		$this->registerRestrictionMappings();
-		foreach (app(RestrictionProvider::class)->getShortcuts() as $shortcut) {
-			$array = explode("@", $shortcut);
-			if(sizeof($array) != 2) {
-				throw new \InvalidArgumentException("The shortcut is invalid formatted. [{$shortcut}]");
-			}
-			EventBuilder::macro($array[1], function() use ($array){
+        $this->registerShortcutMappings();
 
-				return call_user_func("{$array[0]}::{$array[1]}", $this, ...func_get_args());
-			});
-		}
-
-	}
+    }
 	/**
 	 * Register the application services.
 	 *
@@ -63,4 +54,18 @@ class CalendarServiceProvider extends ServiceProvider
 			});
 		}
 	}
+
+    private function registerShortcutMappings ()
+    {
+        foreach (app(RestrictionProvider::class)->getShortcuts() as $shortcut) {
+            $array = explode("@", $shortcut);
+            if (sizeof($array) != 2) {
+                throw new \InvalidArgumentException("The shortcut is invalid formatted. [{$shortcut}]");
+            }
+            EventBuilder::macro($array[1], function () use ($array) {
+
+                return call_user_func("{$array[0]}::{$array[1]}", $this, ...func_get_args());
+            });
+        }
+    }
 }

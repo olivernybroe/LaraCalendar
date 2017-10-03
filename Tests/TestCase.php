@@ -3,8 +3,6 @@ namespace Uruloke\LaraCalendar\Test;
 
 use Uruloke\LaraCalendar\Carbon;
 use Uruloke\LaraCalendar\Contracts\Eventable;
-use Uruloke\LaraCalendar\Restrictions\Weekly\Weekly;
-use Uruloke\LaraCalendar\TestFacade;
 use Uruloke\LaraCalendar\CalendarServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 abstract class TestCase extends OrchestraTestCase
