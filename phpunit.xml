@@ -10,8 +10,8 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="MyPackage Test Suite">
-            <directory>tests</directory>
+        <testsuite name="LaraCalendar Test Suite">
+            <directory>Tests</directory>
         </testsuite>
     </testsuites>
     <filter>
