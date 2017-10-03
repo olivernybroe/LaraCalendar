@@ -36,6 +36,7 @@ class CustomEvent extends TestCase
 		$this->assertInstanceOf(EventWithData::class, $event);
 		$this->assertEquals($event->startsAt(), Carbon::parse('2017-09-05 08:00'));
 		$this->assertEquals($event->endsAt(), Carbon::parse('2017-09-05 18:00'));
+		$this->assertEquals('02332 - Forelæsning', $event->title);
 		$this->assertArraySubset([
 			'title' => '02332 - Forelæsning',
 			'place' => 'Building 306, DTU',
@@ -44,9 +45,22 @@ class CustomEvent extends TestCase
 
 	}
 
+	/** @test */
+	public function cannot_set_event_to_invalid_event_class()
+    {
+        // Arrange
+        $builder = new EventBuilder();
+
+        // Act / Assert
+        $this->expectException(\InvalidArgumentException::class);
+        $builder->setEvent(InvalidEvent::class);
+
+    }
+
 
 }
 
+class InvalidEvent extends Model {}
 
 class EventWithData extends Model implements Eventable {
 	use HasEvent;

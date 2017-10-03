@@ -227,6 +227,7 @@ class EventBuilder implements Arrayable
 	 */
 	public function setEvent ($eventType)
 	{
+	    throw_unless(array_has(class_implements($eventType), Eventable::class), \InvalidArgumentException::class, "The given event [{$eventType}] does not implement [Eventable]");
 		$this->eventType = $eventType;
 		return $this;
 	}
@@ -240,10 +241,6 @@ class EventBuilder implements Arrayable
 	{
 		/** @var Eventable $event */
 		$event = new $this->eventType();
-
-		if(!($event instanceof Eventable)) {
-			throw new \InvalidArgumentException("The given event [{$this->eventType}] does not implement [Eventable]");
-		}
 		$event->setStart($currentDay);
 		$event->setEnds($currentEndDay);
 
