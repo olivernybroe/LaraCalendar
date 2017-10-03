@@ -1,9 +1,8 @@
 language: php
 php:
   - 7.1.9
-  - 7.0
   - nightly
-  - hhvm
+
 before_script:
   - composer self-update
   - composer install --no-interaction
