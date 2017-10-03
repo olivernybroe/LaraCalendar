@@ -1,6 +1,8 @@
 <?php
 namespace Uruloke\LaraCalendar\Test;
 
+use Uruloke\LaraCalendar\Carbon;
+use Uruloke\LaraCalendar\Contracts\Eventable;
 use Uruloke\LaraCalendar\Restrictions\Weekly\Weekly;
 use Uruloke\LaraCalendar\TestFacade;
 use Uruloke\LaraCalendar\CalendarServiceProvider;
@@ -45,4 +47,10 @@ abstract class TestCase extends OrchestraTestCase
 
 		$this->assertTrue($contains, "The haystack does not contain the expected class [{$expected}]");
 	}
+
+    protected function assertEventDays (Eventable $first, $startAt, $endsAt)
+    {
+        $this->assertEquals(Carbon::parse($startAt), $first->startsAt());
+        $this->assertEquals(Carbon::parse($endsAt), $first->endsAt());
+    }
 }

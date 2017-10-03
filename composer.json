@@ -2,6 +2,11 @@
     "name": "uruloke/lara-calendar",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "laravel",
+        "calendar",
+        "recurrences"
+    ],
     "require": {
         "php": ">=7.0",
         "nesbot/carbon": "^1.22",
