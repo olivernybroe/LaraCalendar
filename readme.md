@@ -2,6 +2,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Latest Stable Version](https://poser.pugx.org/uruloke/lara-calendar/v/stable)](https://packagist.org/packages/uruloke/lara-calendar)
 [![Total Downloads](https://poser.pugx.org/uruloke/lara-calendar/downloads)](https://packagist.org/packages/uruloke/lara-calendar)
+[![codecov](https://codecov.io/gh/uruloke/LaraCalendar/branch/master/graph/badge.svg)](https://codecov.io/gh/uruloke/LaraCalendar)
 
 Documentation is still in development.
 
