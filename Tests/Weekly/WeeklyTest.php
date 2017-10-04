@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Uruloke\LaraCalendar\Test\Weekly;
 
-
-use Uruloke\LaraCalendar\Carbon;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\Days\Monday;
 use Uruloke\LaraCalendar\EventBuilder;
 use Uruloke\LaraCalendar\Restrictions\Weekly\Weekly;

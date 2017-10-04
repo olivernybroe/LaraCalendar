@@ -1,11 +1,8 @@
 <?php
 
-
 namespace Uruloke\LaraCalendar\Restrictions\Weekly;
 
-
-
-use Uruloke\LaraCalendar\Carbon;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\Contracts\Days\Day;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Parseable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Recurrence\Recurrencable;

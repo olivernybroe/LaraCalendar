@@ -2,10 +2,9 @@
 
 namespace Uruloke\LaraCalender\Test;
 
-use Carbon\Carbon;
-
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\Days\{
-	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
 };
 use Uruloke\LaraCalendar\EventBuilder;
 use Uruloke\LaraCalendar\Test\TestCase;

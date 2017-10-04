@@ -1,13 +1,8 @@
 <?php
 
-
 namespace Uruloke\LaraCalendar\Models;
 
-
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
-use DateInterval;
-use DateTimeInterface;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\Contracts\Eventable;
 
 /**

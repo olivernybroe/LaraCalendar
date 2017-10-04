@@ -1,6 +1,7 @@
 {
     "name": "uruloke/lara-calendar",
     "type": "library",
+    "description": "Recurring calendar events for Laravel",
     "license": "MIT",
     "keywords": [
         "laravel",
@@ -10,7 +11,7 @@
     "require": {
         "php": ">=7.0",
         "nesbot/carbon": "^1.22",
-        "tightenco/collect": "^5.5"
+        "illuminate/support": "^5.5"
     },
     "require-dev": {
         "orchestra/testbench": "~3.5",

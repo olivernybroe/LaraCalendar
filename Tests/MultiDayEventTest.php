@@ -3,10 +3,7 @@
 
 namespace Uruloke\LaraCalendar\Test;
 
-
-use Uruloke\LaraCalendar\Carbon;
-use Uruloke\LaraCalendar\Contracts\Eventable;
-use Uruloke\LaraCalendar\Days\Tuesday;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\EventBuilder;
 
 class MultiDayEventTest extends TestCase

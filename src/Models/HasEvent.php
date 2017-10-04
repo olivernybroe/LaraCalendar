@@ -3,8 +3,7 @@
 
 namespace Uruloke\LaraCalendar\Models;
 
-use Uruloke\LaraCalendar\Carbon;
-
+use Illuminate\Support\Carbon;
 
 /**
  * Trait HasEvent
