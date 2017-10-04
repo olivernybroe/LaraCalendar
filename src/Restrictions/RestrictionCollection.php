@@ -6,14 +6,12 @@ use Illuminate\Support\Collection;
 
 class RestrictionCollection extends Collection
 {
-	protected function getArrayableItems ($items)
-	{
-		if($items instanceof \DateTimeInterface) {
-			return [$items];
-		}
+    protected function getArrayableItems($items)
+    {
+        if ($items instanceof \DateTimeInterface) {
+            return [$items];
+        }
 
-		return parent::getArrayableItems($items);
-	}
-
-
+        return parent::getArrayableItems($items);
+    }
 }
