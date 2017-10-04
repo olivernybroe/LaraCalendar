@@ -2,23 +2,28 @@
 
 namespace Uruloke\LaraCalendar;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Uruloke\LaraCalendar\Contracts\Eventable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\NeedToPass;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Parseable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
-use Uruloke\LaraCalendar\Days\{
-	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
-};
+use Uruloke\LaraCalendar\Days\Friday;
+use Uruloke\LaraCalendar\Days\Monday;
+use Uruloke\LaraCalendar\Days\Saturday;
+use Uruloke\LaraCalendar\Days\Sunday;
+use Uruloke\LaraCalendar\Days\Thursday;
+use Uruloke\LaraCalendar\Days\Tuesday;
+use Uruloke\LaraCalendar\Days\Wednesday;
 use Uruloke\LaraCalendar\Models\Event;
 use Uruloke\LaraCalendar\Restrictions\RestrictionCollection;
 use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
 
 /**
- * Class EventBuilder
+ * Class EventBuilder.
+ *
  * @method $this biWeekly(string|array $days)
  * @method $this weekly(string|array $days, int $everyNWeek = null)
  * @method $this andWeekly(string|array $days, int $everyNWeek = null)
@@ -29,249 +34,260 @@ use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
  * @method $this withoutWeek(int $weekNumber)
  * @method $this allWorkdays()
  * @method $this allWeekDays()
- * @package Uruloke\LaraCalendar
  */
 class EventBuilder implements Arrayable
 {
-	use Macroable {
-		Macroable::__call as macroCall;
-	}
+    use Macroable {
+        Macroable::__call as macroCall;
+    }
 
-	/** @var  Carbon */
-	protected $startsAt;
-	/** @var  Carbon */
-	protected $endsAt;
+    /** @var Carbon */
+    protected $startsAt;
+    /** @var Carbon */
+    protected $endsAt;
 
-	/** @var RestrictionCollection  */
-	protected $restrictions;
+    /** @var RestrictionCollection */
+    protected $restrictions;
 
-	/** @var Eventable */
-	protected $eventType;
+    /** @var Eventable */
+    protected $eventType;
 
-	/** @var array */
-	protected $eventValues = [];
+    /** @var array */
+    protected $eventValues = [];
 
-	public static $days = [
-		Monday::class,
-		Tuesday::class,
-		Wednesday::class,
-		Thursday::class,
-		Friday::class,
-		Saturday::class,
-		Sunday::class
-	];
+    public static $days = [
+        Monday::class,
+        Tuesday::class,
+        Wednesday::class,
+        Thursday::class,
+        Friday::class,
+        Saturday::class,
+        Sunday::class,
+    ];
 
-	/**
-	 * EventBuilder constructor.
-	 */
-	public function __construct ()
-	{
-		$this->restrictions = new RestrictionCollection();
-		$this->eventType = config('calendar.drivers.event', Event::class);
-	}
+    /**
+     * EventBuilder constructor.
+     */
+    public function __construct()
+    {
+        $this->restrictions = new RestrictionCollection();
+        $this->eventType = config('calendar.drivers.event', Event::class);
+    }
 
-	public static function parse(string $parse) : EventBuilder
-	{
-		$builder = new EventBuilder();
+    public static function parse(string $parse) : EventBuilder
+    {
+        $builder = new self();
 
-		$parser = explode('|', $parse);
+        $parser = explode('|', $parse);
 
-		foreach (app(RestrictionProvider::class)->getParsers() as $parseRegex => $parserClass) {
-			foreach ($parser as $parse) {
-				if(preg_match("/^{$parseRegex}/", $parse, $matches)) {
-					unset($matches[0]);
-					$builder->restrictions->push($parserClass::parse(...$matches));
-				}
-			}
-		}
-		return $builder;
-	}
+        foreach (app(RestrictionProvider::class)->getParsers() as $parseRegex => $parserClass) {
+            foreach ($parser as $parse) {
+                if (preg_match("/^{$parseRegex}/", $parse, $matches)) {
+                    unset($matches[0]);
+                    $builder->restrictions->push($parserClass::parse(...$matches));
+                }
+            }
+        }
 
+        return $builder;
+    }
 
-	public function startsAt(\DateTimeInterface $startsAt)
-	{
-		$this->startsAt = Carbon::parse($startsAt);
-		return $this;
-	}
+    public function startsAt(\DateTimeInterface $startsAt)
+    {
+        $this->startsAt = Carbon::parse($startsAt);
 
-	public function endsAt(\DateTimeInterface $endsAt)
-	{
-		$this->endsAt = Carbon::parse($endsAt);
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getEventsBetween(\DateTimeInterface $from, \DateTimeInterface $to) : EventCollection
-	{
-		$events = new EventCollection();
-		$from = Carbon::parse($from);
-		$to = Carbon::parse($to);
-		$currentDay = $this->startsAt->setDate($from->year, $from->month, $from->day);
-		$currentEndDay = $this->endsAt->setDate($from->year, $from->month, $from->day);
+    public function endsAt(\DateTimeInterface $endsAt)
+    {
+        $this->endsAt = Carbon::parse($endsAt);
 
-		while ($from->lessThanOrEqualTo($to)) {
-			if(!$this->isDayValid($from, $events)) {
-				$from = $from->addDay();
-				$currentDay = $currentDay->addDay();
-				$currentEndDay = $currentEndDay->addDay();
-				continue;
-			}
+        return $this;
+    }
 
-			$event = $this->createEvent($currentDay, $currentEndDay);
-			$events->push($event);
+    public function getEventsBetween(\DateTimeInterface $from, \DateTimeInterface $to) : EventCollection
+    {
+        $events = new EventCollection();
+        $from = Carbon::parse($from);
+        $to = Carbon::parse($to);
+        $currentDay = $this->startsAt->setDate($from->year, $from->month, $from->day);
+        $currentEndDay = $this->endsAt->setDate($from->year, $from->month, $from->day);
 
-			$from->addDay();
-			$currentDay = $currentDay->addDay();
-			$currentEndDay = $currentEndDay->addDay();
-		}
+        while ($from->lessThanOrEqualTo($to)) {
+            if (!$this->isDayValid($from, $events)) {
+                $from = $from->addDay();
+                $currentDay = $currentDay->addDay();
+                $currentEndDay = $currentEndDay->addDay();
+                continue;
+            }
 
-		return $events;
-	}
+            $event = $this->createEvent($currentDay, $currentEndDay);
+            $events->push($event);
 
-	public function getEventsForMonth($month, $year = null) : EventCollection
-	{
-		$day = Carbon::parse("$month $year")->day(1);
-		return $this->getEventsBetween(clone $day->startOfMonth(), $day->endOfMonth());
-	}
+            $from->addDay();
+            $currentDay = $currentDay->addDay();
+            $currentEndDay = $currentEndDay->addDay();
+        }
 
-	public function getNextEvent() {
-		return $this->getNextEvents(1)->first();
-	}
+        return $events;
+    }
 
-	public function getNextEvents(int $amount)
-	{
-		$events = new EventCollection();
+    public function getEventsForMonth($month, $year = null) : EventCollection
+    {
+        $day = Carbon::parse("$month $year")->day(1);
 
-		$currentDay = $this->startsAt;
-		$currentEndDay = $this->endsAt;
+        return $this->getEventsBetween(clone $day->startOfMonth(), $day->endOfMonth());
+    }
 
-		while ($events->count() <= $amount){
-			if(!$this->isDayValid($currentDay, $events)) {
-				$currentDay = $currentDay->addDay();
-				$currentEndDay = $currentEndDay->addDay();
-				continue;
-			}
+    public function getNextEvent()
+    {
+        return $this->getNextEvents(1)->first();
+    }
 
-			$event = $this->createEvent($currentDay, $currentEndDay);
+    public function getNextEvents(int $amount)
+    {
+        $events = new EventCollection();
 
-			$events->push($event);
+        $currentDay = $this->startsAt;
+        $currentEndDay = $this->endsAt;
 
-			$currentDay = $currentDay->addDay();
-			$currentEndDay = $currentEndDay->addDay();
-		}
+        while ($events->count() <= $amount) {
+            if (!$this->isDayValid($currentDay, $events)) {
+                $currentDay = $currentDay->addDay();
+                $currentEndDay = $currentEndDay->addDay();
+                continue;
+            }
 
-		return $events;
-	}
+            $event = $this->createEvent($currentDay, $currentEndDay);
 
-	public function __call ($name, $arguments)
-	{
-		if($this->isEventProperty($name)) {
-			return $this->callEventProperty($name, $arguments);
-		}
-		$this->removeAndFromCall($name);
-		return $this->macroCall($name, $arguments);
-	}
+            $events->push($event);
 
-	public function toString()
-	{
-		return implode("|", $this->toArray());
-	}
+            $currentDay = $currentDay->addDay();
+            $currentEndDay = $currentEndDay->addDay();
+        }
 
-	public function toArray()
-	{
-		$restrictions = [
-			"^{{$this->startsAt->timestamp}}",
-			"\${{$this->endsAt->timestamp}}",
-		];
-		return $this->restrictions->map(function(Parseable $restriction) {
-			return $restriction->__toString();
-		})->merge($restrictions)->toArray();
-	}
+        return $events;
+    }
 
-	public function __toString ()
-	{
-		return $this->toString();
-	}
+    public function __call($name, $arguments)
+    {
+        if ($this->isEventProperty($name)) {
+            return $this->callEventProperty($name, $arguments);
+        }
+        $this->removeAndFromCall($name);
 
-	public function isEventProperty($name) {
-		return $this->eventType::hasEventProperty($name);
-	}
+        return $this->macroCall($name, $arguments);
+    }
 
+    public function toString()
+    {
+        return implode('|', $this->toArray());
+    }
 
-	private function removeAndFromCall (&$name)
-	{
-		if (Str::startsWith($name, 'and')) {
-			$name = Str::after($name, 'and');
-			$name = Str::snake($name);
-		}
-	}
+    public function toArray()
+    {
+        $restrictions = [
+            "^{{$this->startsAt->timestamp}}",
+            "\${{$this->endsAt->timestamp}}",
+        ];
 
-	private function isDayValid (Carbon $currentDay, EventCollection $events): bool
-	{
-		$passes = false;
-		$needToPass = true;
+        return $this->restrictions->map(function (Parseable $restriction) {
+            return $restriction->__toString();
+        })->merge($restrictions)->toArray();
+    }
 
-		$this->restrictions->each(function (Restrictionable $restriction) use (&$passes, &$needToPass, $currentDay, $events) {
-			if ($restriction instanceof NeedToPass) {
-				$needToPass = $restriction->passes($currentDay, $events);
-			} else {
-				if ($restriction->passes($currentDay, $events)) {
-					$passes = true;
-				}
-			}
-		});
-		return $passes && $needToPass;
-	}
+    public function __toString()
+    {
+        return $this->toString();
+    }
 
-	/**
-	 * @param string $eventType
-	 * @return EventBuilder
-	 */
-	public function setEvent ($eventType)
-	{
-	    throw_unless(array_has(class_implements($eventType), Eventable::class), \InvalidArgumentException::class, "The given event [{$eventType}] does not implement [Eventable]");
-		$this->eventType = $eventType;
-		return $this;
-	}
+    public function isEventProperty($name)
+    {
+        return $this->eventType::hasEventProperty($name);
+    }
 
-	/**
-	 * @param $currentDay
-	 * @param $currentEndDay
-	 * @return mixed
-	 */
-	private function createEvent ($currentDay, $currentEndDay)
-	{
-		/** @var Eventable $event */
-		$event = new $this->eventType();
-		$event->setStart($currentDay);
-		$event->setEnds($currentEndDay);
+    private function removeAndFromCall(&$name)
+    {
+        if (Str::startsWith($name, 'and')) {
+            $name = Str::after($name, 'and');
+            $name = Str::snake($name);
+        }
+    }
 
-		foreach ($this->eventValues as $key => $value){
-			$event->$key = $value;
-		}
+    private function isDayValid(Carbon $currentDay, EventCollection $events): bool
+    {
+        $passes = false;
+        $needToPass = true;
 
-		return $event;
-	}
+        $this->restrictions->each(function (Restrictionable $restriction) use (&$passes, &$needToPass, $currentDay, $events) {
+            if ($restriction instanceof NeedToPass) {
+                $needToPass = $restriction->passes($currentDay, $events);
+            } else {
+                if ($restriction->passes($currentDay, $events)) {
+                    $passes = true;
+                }
+            }
+        });
 
-	/**
-	 * @param $name
-	 * @param $arguments
-	 * @return $this|mixed
-	 */
-	private function callEventProperty ($name, $arguments)
-	{
-		if (sizeof($arguments) >= 1) {
-			$this->eventValues[$name] = $arguments[0];
-			return $this;
-		}
-		return $this->eventValues[$name];
-	}
+        return $passes && $needToPass;
+    }
 
-	/**
-	 * @return RestrictionCollection
-	 */
-	public function getRestrictions (): RestrictionCollection
-	{
-		return $this->restrictions;
-	}
+    /**
+     * @param string $eventType
+     *
+     * @return EventBuilder
+     */
+    public function setEvent($eventType)
+    {
+        throw_unless(array_has(class_implements($eventType), Eventable::class), \InvalidArgumentException::class, "The given event [{$eventType}] does not implement [Eventable]");
+        $this->eventType = $eventType;
 
+        return $this;
+    }
+
+    /**
+     * @param $currentDay
+     * @param $currentEndDay
+     *
+     * @return mixed
+     */
+    private function createEvent($currentDay, $currentEndDay)
+    {
+        /** @var Eventable $event */
+        $event = new $this->eventType();
+        $event->setStart($currentDay);
+        $event->setEnds($currentEndDay);
+
+        foreach ($this->eventValues as $key => $value) {
+            $event->$key = $value;
+        }
+
+        return $event;
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     *
+     * @return $this|mixed
+     */
+    private function callEventProperty($name, $arguments)
+    {
+        if (count($arguments) >= 1) {
+            $this->eventValues[$name] = $arguments[0];
+
+            return $this;
+        }
+
+        return $this->eventValues[$name];
+    }
+
+    /**
+     * @return RestrictionCollection
+     */
+    public function getRestrictions(): RestrictionCollection
+    {
+        return $this->restrictions;
+    }
 }

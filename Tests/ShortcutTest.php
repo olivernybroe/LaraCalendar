@@ -1,25 +1,19 @@
 <?php
 
-
 namespace Uruloke\LaraCalendar\Test;
-
 
 class ShortcutTest extends TestCase
 {
     public $expectedException;
 
-    protected function setUp ()
+    protected function setUp()
     {
-        try{
+        try {
             parent::setUp();
+        } catch (\Exception $exception) {
+            $this->expectedException = $exception;
         }
-        catch (\Exception $exception)
-        {
-           $this->expectedException = $exception;
-        }
-
     }
-
 
     /** @test */
     public function cannot_boot_when_invalid_shortcut()
@@ -27,12 +21,10 @@ class ShortcutTest extends TestCase
         $this->assertInstanceOf(\InvalidArgumentException::class, $this->expectedException);
     }
 
-    protected function getEnvironmentSetUp ($app)
+    protected function getEnvironmentSetUp($app)
     {
         $app['config']['calendar.shortcuts'] = [
-            'test@test@test'
+            'test@test@test',
         ];
     }
-
-
 }
