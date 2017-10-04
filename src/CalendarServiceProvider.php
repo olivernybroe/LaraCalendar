@@ -1,6 +1,7 @@
 <?php
 namespace Uruloke\LaraCalendar;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\ServiceProvider;
 use Uruloke\LaraCalendar\Restrictions\RestrictionCollection;
 use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
@@ -16,7 +17,7 @@ class CalendarServiceProvider extends ServiceProvider
 	{
 		$this->registerRestrictionMappings();
         $this->registerShortcutMappings();
-
+        $this->registerCarbonMappings();
     }
 	/**
 	 * Register the application services.
@@ -67,5 +68,20 @@ class CalendarServiceProvider extends ServiceProvider
                 return call_user_func("{$array[0]}::{$array[1]}", $this, ...func_get_args());
             });
         }
+    }
+
+    private function registerCarbonMappings ()
+    {
+        Carbon::macro('isEvenWeek', function () {
+            return $this->weekOfYear % 2 == 0;
+        });
+
+        Carbon::macro('isUnevenWeek', function () {
+            return ! $this->isEvenWeek();
+        });
+
+        Carbon::macro('isWeek', function (int $week) {
+            return $this->weekOfYear === $week;
+        });
     }
 }

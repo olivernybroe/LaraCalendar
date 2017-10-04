@@ -3,9 +3,7 @@
 
 namespace Uruloke\LaraCalendar\Restrictions\Daily;
 
-
-use Carbon\Carbon;
-use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\Contracts\Restrictions\NeedToPass;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Parseable;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
@@ -30,7 +28,7 @@ class WithoutDay implements Restrictionable, NeedToPass, Parseable
 	}
 
 
-	public function passes (laraCarbon $currentDay, EventCollection $events): bool
+	public function passes (Carbon $currentDay, EventCollection $events): bool
 	{
 		return !$currentDay->isSameDay($this->withoutDay);
 	}

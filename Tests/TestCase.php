@@ -1,7 +1,7 @@
 <?php
 namespace Uruloke\LaraCalendar\Test;
 
-use Uruloke\LaraCalendar\Carbon;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\Contracts\Eventable;
 use Uruloke\LaraCalendar\CalendarServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;

@@ -4,7 +4,7 @@
 namespace Uruloke\LaraCalendar\Contracts;
 
 
-use Uruloke\LaraCalendar\Carbon;
+use Illuminate\Support\Carbon;
 
 interface Eventable
 {

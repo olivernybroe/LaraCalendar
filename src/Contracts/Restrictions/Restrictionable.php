@@ -3,8 +3,7 @@
 
 namespace Uruloke\LaraCalendar\Contracts\Restrictions;
 
-
-use Uruloke\LaraCalendar\Carbon;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\EventCollection;
 
 interface Restrictionable

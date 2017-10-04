@@ -3,11 +3,9 @@
 
 namespace Uruloke\LaraCalendar\Test;
 
-
-use Uruloke\LaraCalendar\Carbon;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\EventBuilder;
 use Uruloke\LaraCalendar\Restrictions\Daily\WithoutDay;
-use Uruloke\LaraCalendar\Restrictions\Weekly\NotWeekly;
 use Uruloke\LaraCalendar\Restrictions\Weekly\Weekly;
 
 class StringifyTest extends TestCase
