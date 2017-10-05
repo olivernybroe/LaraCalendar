@@ -100,6 +100,33 @@ class EventBuilder implements Arrayable
 		return $this;
 	}
 
+	/**
+	 * @param $currentDay
+	 * @param $currentEndDay
+	 * @param $events
+	 */
+	private function collectEvent($currentDay, $currentEndDay, $events) : void
+	{
+		$event = $this->createEvent($currentDay, $currentEndDay);
+		$events->push($event);
+	}
+
+	/**
+	 * @param array ...$dates
+	 */
+	private function increaseByDay(...$dates) : void
+	{
+		foreach ($dates as $date) {
+			$date->addDay();
+		}
+	}
+
+	/**
+	 * @param \DateTimeInterface $from
+	 * @param \DateTimeInterface $to
+	 *
+	 * @return EventCollection
+	 */
 	public function getEventsBetween(\DateTimeInterface $from, \DateTimeInterface $to) : EventCollection
 	{
 		$events = new EventCollection();
@@ -110,18 +137,12 @@ class EventBuilder implements Arrayable
 
 		while ($from->lessThanOrEqualTo($to)) {
 			if(!$this->isDayValid($from, $events)) {
-				$from = $from->addDay();
-				$currentDay = $currentDay->addDay();
-				$currentEndDay = $currentEndDay->addDay();
+				$this->increaseByDay($from, $currentDay, $currentEndDay);
 				continue;
 			}
 
-			$event = $this->createEvent($currentDay, $currentEndDay);
-			$events->push($event);
-
-			$from->addDay();
-			$currentDay = $currentDay->addDay();
-			$currentEndDay = $currentEndDay->addDay();
+			$this->collectEvent($currentDay, $currentEndDay, $events);
+			$this->increaseByDay($from, $currentDay, $currentEndDay);
 		}
 
 		return $events;
@@ -137,6 +158,11 @@ class EventBuilder implements Arrayable
 		return $this->getNextEvents(1)->first();
 	}
 
+	/**
+	 * @param int $amount
+	 *
+	 * @return EventCollection
+	 */
 	public function getNextEvents(int $amount)
 	{
 		$events = new EventCollection();
@@ -144,19 +170,14 @@ class EventBuilder implements Arrayable
 		$currentDay = $this->startsAt;
 		$currentEndDay = $this->endsAt;
 
-		while ($events->count() <= $amount){
+		while ($events->count() <= $amount) {
 			if(!$this->isDayValid($currentDay, $events)) {
-				$currentDay = $currentDay->addDay();
-				$currentEndDay = $currentEndDay->addDay();
+				$this->increaseByDay($currentDay, $currentEndDay);
 				continue;
 			}
 
-			$event = $this->createEvent($currentDay, $currentEndDay);
-
-			$events->push($event);
-
-			$currentDay = $currentDay->addDay();
-			$currentEndDay = $currentEndDay->addDay();
+			$this->collectEvent($currentDay, $currentEndDay, $events);
+			$this->increaseByDay($currentDay, $currentEndDay);
 		}
 
 		return $events;
