@@ -3,8 +3,7 @@
 
 namespace Uruloke\LaraCalendar\Days;
 
-
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\Contracts\Days\Day;
 
 class Thursday implements Day

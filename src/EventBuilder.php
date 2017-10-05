@@ -2,6 +2,7 @@
 
 namespace Uruloke\LaraCalendar;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;

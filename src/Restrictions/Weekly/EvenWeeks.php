@@ -4,7 +4,7 @@
 namespace Uruloke\LaraCalendar\Restrictions\Weekly;
 
 
-use Uruloke\LaraCalendar\Carbon;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\Contracts\Restrictions\Restrictionable;
 use Uruloke\LaraCalendar\EventCollection;
 

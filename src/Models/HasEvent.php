@@ -3,8 +3,7 @@
 
 namespace Uruloke\LaraCalendar\Models;
 
-use Uruloke\LaraCalendar\Carbon;
-
+use Illuminate\Support\Carbon;
 
 /**
  * Trait HasEvent
@@ -28,7 +27,11 @@ trait HasEvent
 
 	public static function getEventProperties() : array
 	{
-		return static::$properties ?? [];
+		if (property_exists(static::class, 'properties')) {
+			return static::$properties;
+		}
+
+		return [];
 	}
 
 	public static function hasEventProperty(string $key) : bool

@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Uruloke\LaraCalendar\Test\Daily;
 
-
-use Uruloke\LaraCalendar\Carbon;
+use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\EventBuilder;
 use Uruloke\LaraCalendar\Restrictions\Daily\WithoutDay;
 use Uruloke\LaraCalendar\Test\TestCase;

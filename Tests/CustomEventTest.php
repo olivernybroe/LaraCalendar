@@ -2,13 +2,12 @@
 
 namespace Uruloke\LaraCalender\Test;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use EventCollection;
 use Illuminate\Database\Eloquent\Model;
 use Uruloke\LaraCalendar\Contracts\Eventable;
 use Uruloke\LaraCalendar\Days\Tuesday;
 use Uruloke\LaraCalendar\EventBuilder;
-use Uruloke\LaraCalendar\Models\Event;
 use Uruloke\LaraCalendar\Models\HasEvent;
 use Uruloke\LaraCalendar\Test\TestCase;
 
