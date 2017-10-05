@@ -111,7 +111,7 @@ class EventBuilder implements Arrayable
      * @param $currentEndDay
      * @param $events
      */
-    private function collectEvent($currentDay, $currentEndDay, $events) : void
+    private function collectEvent($currentDay, $currentEndDay, $events)
     {
         $event = $this->createEvent($currentDay, $currentEndDay);
         $events->push($event);
@@ -120,7 +120,7 @@ class EventBuilder implements Arrayable
     /**
      * @param array ...$dates
      */
-    private function increaseByDay(...$dates) : void
+    private function increaseByDay(...$dates)
     {
         foreach ($dates as $date) {
             $date->addDay();

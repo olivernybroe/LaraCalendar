@@ -3,6 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/uruloke/lara-calendar/v/stable)](https://packagist.org/packages/uruloke/lara-calendar)
 [![Total Downloads](https://poser.pugx.org/uruloke/lara-calendar/downloads)](https://packagist.org/packages/uruloke/lara-calendar)
 [![codecov](https://codecov.io/gh/uruloke/LaraCalendar/branch/master/graph/badge.svg)](https://codecov.io/gh/uruloke/LaraCalendar)
+[![StyleCI](https://styleci.io/repos/103414073/shield?branch=master)](https://styleci.io/repos/103414073)
 
 Documentation is still in development.
 
