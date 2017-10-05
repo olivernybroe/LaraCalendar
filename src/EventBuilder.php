@@ -29,6 +29,7 @@ use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
  * @method $this withoutWeek(int $weekNumber)
  * @method $this allWorkdays()
  * @method $this allWeekDays()
+ * @method $this allWeekendDays()
  * @package Uruloke\LaraCalendar
  */
 class EventBuilder implements Arrayable
