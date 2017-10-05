@@ -1,53 +1,53 @@
 <?php
 
-
 namespace Uruloke\LaraCalendar\Models;
 
 use Illuminate\Support\Carbon;
 
 /**
- * Trait HasEvent
- * @package Uruloke\LaraCalendar\Models
+ * Trait HasEvent.
  */
 trait HasEvent
 {
-	protected $start;
+    protected $start;
 
-	protected $ends;
+    protected $ends;
 
-	public function startsAt() : Carbon
-	{
-		return $this->start;
-	}
+    public function startsAt() : Carbon
+    {
+        return $this->start;
+    }
 
-	public function endsAt() : Carbon
-	{
-		return $this->ends;
-	}
+    public function endsAt() : Carbon
+    {
+        return $this->ends;
+    }
 
-	public static function getEventProperties() : array
-	{
-		if (property_exists(static::class, 'properties')) {
-			return static::$properties;
-		}
+    public static function getEventProperties() : array
+    {
+        if (property_exists(static::class, 'properties')) {
+            return static::$properties;
+        }
 
-		return [];
-	}
+        return [];
+    }
 
-	public static function hasEventProperty(string $key) : bool
-	{
-		return collect(static::getEventProperties())->contains($key);
-	}
+    public static function hasEventProperty(string $key) : bool
+    {
+        return collect(static::getEventProperties())->contains($key);
+    }
 
-	public function setStart (\DateTimeInterface $start)
-	{
-		$this->start = Carbon::parse($start);
-		return $this;
-	}
+    public function setStart(\DateTimeInterface $start)
+    {
+        $this->start = Carbon::parse($start);
 
-	public function setEnds (\DateTimeInterface $ends)
-	{
-		$this->ends = Carbon::parse($ends);
-		return $this;
-	}
+        return $this;
+    }
+
+    public function setEnds(\DateTimeInterface $ends)
+    {
+        $this->ends = Carbon::parse($ends);
+
+        return $this;
+    }
 }

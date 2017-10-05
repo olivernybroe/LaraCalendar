@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Uruloke\LaraCalendar\Test;
-
 
 use Uruloke\LaraCalendar\Days\Monday;
 
