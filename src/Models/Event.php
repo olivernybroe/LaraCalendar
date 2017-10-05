@@ -6,11 +6,10 @@ use Illuminate\Support\Carbon;
 use Uruloke\LaraCalendar\Contracts\Eventable;
 
 /**
- * Class Event
+ * Class Event.
  * @property Carbon start
- * @package Uruloke\LaraCalendar\Models
  */
 class Event implements Eventable
 {
-	use HasEvent;
+    use HasEvent;
 }

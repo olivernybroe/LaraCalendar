@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Uruloke\LaraCalendar\Test;
 
-
-use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
 use Uruloke\LaraCalendar\Restrictions\Weekly\Weekly;
+use Uruloke\LaraCalendar\Restrictions\RestrictionProvider;
 
 class RestrictionProviderTest extends TestCase
 {
