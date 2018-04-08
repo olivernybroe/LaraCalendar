@@ -74,7 +74,7 @@ class EventBuilder implements Arrayable
         $this->eventType = config('calendar.drivers.event', Event::class);
     }
 
-    public static function parse(string $parse) : EventBuilder
+    public static function parse(string $parse) : self
     {
         $builder = new self();
 
