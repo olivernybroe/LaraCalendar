@@ -10,11 +10,13 @@ Documentation is still in development.
 ## Introduction
 Building a calendar can be troublesome, especially when you deal with recurring events. This package tries to solve this problem by making an easy to use event builder with extensibility. <br>
 
-Install it via composer
+The package is made for Laravel and uses Laravel Collections extensively. 
+
+For installing the package, just run and you are good to go. 
 ```
 $ composer require uruloke/lara-calendar
 ```
-
+The service providers is autoloaded, so enjoy! 
 
 ## Example
 Let's say we want to create an event which repeats every Monday, Tuesday, Wednesday and Thursday.
