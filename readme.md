@@ -99,3 +99,4 @@ $builder->endsAt(Carbon::parse("2017-09-05 18:00"));
 $builder->allWeekDays();
 $builder->withoutDay(Carbon::parse("2017-09-07"));
 ```
+
